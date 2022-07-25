@@ -2,6 +2,8 @@ package com.financeiro.financeiroapi.controller;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.Optional;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +28,6 @@ import com.financeiro.financeiroapi.input.EnderecosInput;
 import com.financeiro.financeiroapi.model.Enderecos;
 import com.financeiro.financeiroapi.repository.EnderecosRepository;
 import com.financeiro.financeiroapi.service.EnderecosService;
-
 
 @RestController
 @RequestMapping("/enderecos")
@@ -40,6 +43,25 @@ public class EnderecosController {
 	    return enderecosRepository.filtrar(enderecosFilter, pageable);
 	}
 	
+	//Tonhas busca lista de enderecos por pessoa
+	@GetMapping(value = "findByPessoaId")
+	@ResponseBody
+	public ResponseEntity<List<Enderecos>> findByPessoaId(@RequestParam(name = "pessoaId") Long pessoaId){
+		//System.err.println("Bateu aqui " + pessoaId);
+		List<Enderecos> enderecos = enderecosRepository.findByPessoaId(pessoaId);
+		return new ResponseEntity<List<Enderecos>>(enderecos, HttpStatus.OK);
+	}
+	
+	// Tonhas busca endereco por id.
+	@GetMapping("/{id}")
+	public ResponseEntity<Enderecos> buscarPeloCodigo(@PathVariable Long id) {
+		//System.err.println("OLHA ONDE ELE VÊIO !! " );
+	    Optional<Enderecos> enderecos = enderecosRepository.findById(id);
+	    return enderecos != null
+	        ? ResponseEntity.ok(enderecos.get())
+	        : ResponseEntity.notFound().build();
+	}
+	 
 	// AA - Inserir
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)

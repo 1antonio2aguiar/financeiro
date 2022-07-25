@@ -7,13 +7,12 @@ import { Bairros } from './../../shared/models/bairros';
 import { BairrosFiltro } from './bairros-filtro';
 
 @Injectable({
-  providedIn: 'root'
+   providedIn: 'root'
 })
 
 export class BairrosService extends BaseResourceService<Bairros>{
 
-   header = new HttpHeaders(
-   {
+   header = new HttpHeaders({
       'Content-Type': 'application/json'
    });
 
@@ -59,4 +58,3 @@ export class BairrosService extends BaseResourceService<Bairros>{
      .then(response => response);
    }
 }
-

@@ -12,13 +12,12 @@ import { Logradouros } from './../../shared/models/logradouros';
 
 export class LogradourosService extends BaseResourceService<Logradouros> {
 
-  header = new HttpHeaders(
-    {
+   header = new HttpHeaders({
       'Content-Type': 'application/json'
-    });
+   });
 
  	constructor(protected injector: Injector) {
- 	 super(environment.apiUrl + 'logradouros', injector, Logradouros.fromJson);
+ 	   super(environment.apiUrl + 'logradouros', injector, Logradouros.fromJson);
  	}
 
  	pesquisar(filtro: LogradourosFiltro): Promise<any> {

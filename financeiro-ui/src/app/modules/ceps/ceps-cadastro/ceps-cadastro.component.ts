@@ -54,7 +54,7 @@ export class CepsCadastroComponent extends BaseResourceFormComponent<Ceps> {
    protected buildResourceForm() {
       this.resourceForm = this.formBuilder.group({
          id: [null],
-         cep: [null],
+         cep: [null, [Validators.required]],
          numeroIni:[1],
          numeroFin:[999999999],
          identificacao: ["U"],

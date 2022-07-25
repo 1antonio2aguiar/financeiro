@@ -12,14 +12,13 @@ import { CepsFiltro } from './ceps-filtro';
 
 export class CepsService extends BaseResourceService<Ceps>{
 
-   header = new HttpHeaders(
-      {
-         'Content-Type': 'application/json'
-      });
+   header = new HttpHeaders({
+      'Content-Type': 'application/json'
+   });
 
-      constructor(protected injector: Injector) {
-         super(environment.apiUrl + 'ceps', injector, Ceps.fromJson);
-   }
+ 	constructor(protected injector: Injector) {
+ 	   super(environment.apiUrl + 'ceps', injector, Ceps.fromJson);
+ 	}
 
    pesquisar(filtro: CepsFiltro): Promise<any> {
       let params = filtro.params;
@@ -39,12 +38,12 @@ export class CepsService extends BaseResourceService<Ceps>{
          };
          return resultado;
       });
-    }
+   }
 
    listAll(): Promise<any> {
       return this.http.get<any>( this.apiPath + '/' )
-      .toPromise()
-      .then(response => response.content);
+        .toPromise()
+        .then(response => response.content);
    }
 
    createCep(resource): Promise<any> {
@@ -59,4 +58,3 @@ export class CepsService extends BaseResourceService<Ceps>{
      .then(response => response);
    }
 }
-

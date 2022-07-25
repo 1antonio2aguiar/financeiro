@@ -8,9 +8,9 @@ import { environment } from 'src/environments/environment';
 
 import { PessoasService } from '../pessoas.service';
 import { Pessoas } from './../../../shared/models/pessoas';
-//import { EnderecosService } from '../enderecos/enderecos.service';
+import { EnderecosService } from '../enderecos/enderecos.service';
 //import { ContatosService } from '../contatos/contatos.service';
-//import { DocumentosService } from '../documentos/documentos.service';
+import { DocumentosService } from '../documentos/documentos.service';
 //import { EmpresasService } from '../empresas/empresas.service';
 
 @Component({
@@ -21,48 +21,47 @@ import { Pessoas } from './../../../shared/models/pessoas';
 
 export class PessoasCadastroComponent extends BaseResourceFormComponent<Pessoas> {
 
-  ptBrLocale;
-  selectedTab
-  @Input() pessoaId: string;
-  env = environment;
+   ptBrLocale;
+   selectedTab
+   @Input() pessoaId: string;
+   env = environment;
 
-  constructor(
+   constructor(
 
-      protected pessoasService: PessoasService,
-      //protected enderecosService: EnderecosService,
-      //protected contatosService: ContatosService,
-      //protected documentosService: DocumentosService,
-      //protected empresasService: EmpresasService,
-      protected injector: Injector,
-      public dialogService: DialogService,
-      public messageService: MessageService,
+         protected pessoasService: PessoasService,
+         protected enderecosService: EnderecosService,
+         //protected contatosService: ContatosService,
+         protected documentosService: DocumentosService,
+         //protected empresasService: EmpresasService,
+         protected injector: Injector,
+         public dialogService: DialogService,
+         public messageService: MessageService,
 
-      // Isso aqui e para corrigir o erro: ExpressionChangedAfterItHasBeenCheckedError
-      private cdref: ChangeDetectorRef,
+         // Isso aqui e para corrigir o erro: ExpressionChangedAfterItHasBeenCheckedError
+         private cdref: ChangeDetectorRef,
 
-  ) {
+   ) {
 
-    super(injector, new Pessoas(), pessoasService, Pessoas.fromJson, new MessageService());
-    this.ptBrLocale = this.loadLocale();
-  }
+      super(injector, new Pessoas(), pessoasService, Pessoas.fromJson, new MessageService());
+      this.ptBrLocale = this.loadLocale();
+   }
 
-  // Isso aqui e para corrigir o erro: ExpressionChangedAfterItHasBeenCheckedError
-  ngAfterContentChecked() {
-    this.cdref.detectChanges();
-  }
+   // Isso aqui e para corrigir o erro: ExpressionChangedAfterItHasBeenCheckedError
+   ngAfterContentChecked() {
+      this.cdref.detectChanges();
+   }
 
-  protected buildResourceForm() {
-      this.resourceForm = this.formBuilder.group({
-    })
-  }
+   protected buildResourceForm() {
+         this.resourceForm = this.formBuilder.group({
+      })
+   }
 
    // Ao clicar nas abas dispara este evento
    onTabChange(event) {
       this.pessoaId = (<HTMLSelectElement>document.getElementById('id')).value;
 
       if (event.index == 1) {
-         console.log("CLICOU NA ABA ENDERECOS ")
-         //this.enderecosService.listAll(this.pessoaId);
+         this.enderecosService.listAll(this.pessoaId);
       }
 
       /*if(event.index == 2){
@@ -70,10 +69,10 @@ export class PessoasCadastroComponent extends BaseResourceFormComponent<Pessoas>
          this.contatosService.listAll(this.pessoaId)
       }*/
 
-      /*if(event.index == 3){
+      if(event.index == 3){
          //console.log("CLICOU NA ABA DOCUMENTOS ")
          this.documentosService.listAll(this.pessoaId)
-      }*/
+      }
 
       /*if(event.index == 4){
          //console.log("CLICOU NA ABA EMPRESAS ")

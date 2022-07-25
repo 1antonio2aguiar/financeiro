@@ -63,6 +63,11 @@ public class PessoasService {
 	//Update
 	@Transactional
 	public Pessoas atualizar(Long id, PessoasInput pessoasInput) {
+		
+		// Retira caracteres, traço e ponto do cpf/cnpj.
+		var cpfCnpj = pessoasInput.getCpfCnpj().replaceAll("\\p{Punct}", "");
+		pessoasInput.setCpfCnpj(cpfCnpj);
+				
 		Pessoas pessoasSalva = buscarPeloCodigo(id);
 
 		BeanUtils.copyProperties(pessoasInput, pessoasSalva, "id");

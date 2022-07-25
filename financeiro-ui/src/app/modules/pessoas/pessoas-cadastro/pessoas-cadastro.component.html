@@ -2,14 +2,27 @@
 <app-bread-crumb [items]="[{label: 'Pessoas', routerLink:'/pessoas'}, {label: pageTitle}]"></app-bread-crumb>
 
 <div class="p-col-12 text-center">
-  <p-tabView orientation="top" (onChange)="onTabChange($event)">
-    <p-tabPanel header="Pessoas" [selected]="selectedTab==0">
+   <p-tabView orientation="top" (onChange)="onTabChange($event)">
+      <p-tabPanel header="Pessoas" [selected]="selectedTab==0">
+         <app-pessoas-cadastro-view>
+         </app-pessoas-cadastro-view>
+      </p-tabPanel>
 
-      <app-pessoas-cadastro-view>
-      </app-pessoas-cadastro-view>
+      <p-tabPanel id="abaEnderecos" header="Endereços" [selected]="selectedTab==1"
+         [disabled]="env.tabPanelOnOff">
 
-    </p-tabPanel>
+         <app-enderecos-list>
+         </app-enderecos-list>
+      </p-tabPanel>
 
-  </p-tabView>
+      <p-tabPanel id="abaDocumentos" header="Documentos" [selected]="selectedTab==3"
+         [disabled]="env.tabPanelOnOff">
+         <app-documentos-list>
+         </app-documentos-list>
+      </p-tabPanel>
+
+
+
+   </p-tabView>
 
 </div>

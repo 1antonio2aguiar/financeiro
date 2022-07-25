@@ -67,7 +67,12 @@ altera o arquivo angular.joson ou angular cli.joson
   "src/styles.css"
 
 //Retira os pontos de os traços do cpf/cnpj
-//(<HTMLSelectElement>document.getElementById('cpfCnpj')).value.match(/\d/g).join("");
+===========================================
+(<HTMLSelectElement>document.getElementById('cpfCnpj')).value.match(/\d/g).join("");
+
+pega valor do RESOURCE
+======================
+idDistrito: this.resourceForm.get('distritos').get('id').value
 
 
 https://acervolima.com/componente-angular-primeng-tabview/

@@ -1,8 +1,12 @@
 package com.financeiro.financeiroapi.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Optional;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,10 +24,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.financeiro.financeiroapi.filter.PessoasFilter;
-import com.financeiro.financeiroapi.input.BairrosInput;
 import com.financeiro.financeiroapi.input.PessoasInput;
-import com.financeiro.financeiroapi.model.Bairros;
 import com.financeiro.financeiroapi.model.Pessoas;
+import com.financeiro.financeiroapi.outputs.PessoasOutput;
 import com.financeiro.financeiroapi.repository.PessoasRepository;
 import com.financeiro.financeiroapi.service.PessoasService;
 
@@ -48,21 +51,34 @@ public class PessoasController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(pessoasSalva);
 	}
 	
+	// Edit
 	@GetMapping("/{id}")
-	public ResponseEntity<Pessoas> BuscarPorId(@PathVariable Long id) {
-		System.err.println("Entrou aqui ");
-		return pessoasRepository.findById(id)
+	public ResponseEntity<PessoasOutput> BuscarPorId(@PathVariable Long id) {
+		//System.err.println("Entrou aqui " );
+		/*return pessoasRepository.findById(id)
 				.map(pessoas -> ResponseEntity.ok(pessoas))
-				.orElse(ResponseEntity.notFound().build());
+				.orElse(ResponseEntity.notFound().build());*/
 		
 		// OU
 		
-		//Optional<Pessoas> pessoas = pessoasRepository.findById(id);
-		//if(pessoas.isPresent()) {
-		//	return ResponseEntity.ok(pessoas.get());
-		//} 
-		//return ResponseEntity.notFound().build();
- 		
+		PessoasOutput pessoasOutput = null;
+		Optional<Pessoas> pessoas = pessoasRepository.findById(id);
+		if(pessoas.isPresent()) {
+			//System.err.println("Entrou aqui " + pessoas.get().getDataRegistro());
+			
+			pessoasOutput = new PessoasOutput();
+			
+			if(pessoas.get().getDataRegistro() != null){
+				SimpleDateFormat formatoDesejado = new SimpleDateFormat("dd/MM/yyyy");
+				String dataFormatada = null;
+				dataFormatada = formatoDesejado.format(pessoas.get().getDataRegistro());
+				pessoasOutput.setDataRegistro(dataFormatada);
+			}
+			
+			BeanUtils.copyProperties(pessoas.get(), pessoasOutput);
+			
+		} 
+		return pessoasOutput != null ? ResponseEntity.ok(pessoasOutput) : ResponseEntity.notFound().build();
 	}
 	
 	// Alterar
@@ -81,7 +97,5 @@ public class PessoasController {
 		
 		pessoasService.excluir(id);
 		return ResponseEntity.noContent().build();		
-		
-	}
-	
+	}	
 }

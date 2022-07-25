@@ -32,7 +32,7 @@ export class LogradourosModalComponent extends BaseResourceListComponent<Logrado
       public config: DynamicDialogConfig
    ) {
      super(logradourosService, confirmationService, messageService);
-     // parte de filtrar bairros da cidade
+     // parte de filtrar logradouros da cidade
      this.idCidade = config.data.idCidade;
    }
 
@@ -73,3 +73,4 @@ export class LogradourosModalComponent extends BaseResourceListComponent<Logrado
       this.ref.close(logradouros);
    }
 }
+

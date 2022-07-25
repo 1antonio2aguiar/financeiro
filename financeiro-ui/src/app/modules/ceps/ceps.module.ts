@@ -1,5 +1,3 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { SharedModule } from './../../shared/shared.module';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
@@ -13,15 +11,17 @@ import { TableModule } from 'primeng/table';
 import { PanelModule } from 'primeng/panel';
 import { DropdownModule } from 'primeng/dropdown';
 import { DialogService } from 'primeng/dynamicdialog';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 import { CepsRoutingModule } from './ceps-routing.module';
 import { CepsPesquisaComponent } from './ceps-pesquisa/ceps-pesquisa.component';
 import { CepsCadastroComponent } from './ceps-cadastro/ceps-cadastro.component';
+import { CepsModalComponent } from './ceps-modal/ceps-modal.component';
 
 @NgModule({
-   declarations: [CepsPesquisaComponent, CepsCadastroComponent],
+   declarations: [CepsPesquisaComponent, CepsCadastroComponent, CepsModalComponent],
    imports: [
-      CommonModule,
       SharedModule,
       IMaskModule,
       CalendarModule,
@@ -34,10 +34,11 @@ import { CepsCadastroComponent } from './ceps-cadastro/ceps-cadastro.component';
       MessageModule,
       ToastModule,
       DropdownModule,
+      CommonModule,
       CepsRoutingModule
    ],
-   providers: [DialogService]
+   providers: [DialogService],
+   exports:[CepsModalComponent],
 })
 
 export class CepsModule { }
-

@@ -12,6 +12,7 @@ import { Pessoas } from './../../../shared/models/pessoas';
 //import { DistritosModalComponent } from './../../distritos/distritos-modal/distritos-modal.component';
 
 import * as moment from 'moment';
+import { getDateMeta } from '@fullcalendar/core';
 
 @Component({
    selector: 'app-pessoas-cadastro-view',
@@ -21,16 +22,12 @@ import * as moment from 'moment';
 })
 
 export class PessoasCadastroViewComponent extends BaseResourceFormComponent<Pessoas> {
-   public myModel: string
-   public modelWithValue: string
-   public formControlInput: FormControl = new FormControl()
-   public maskCpf: Array<string | RegExp>
-   public maskCnpj: Array<string | RegExp>
 
    @Input() pessoaId: number;
    env = environment;
-   cpf_cnpj = "";
    botaoOnOf = false;
+   maxDate = new Date();
+   isDisabledFild: boolean = true;
 
    genero = [
       { value: 'M', selected: false, label: 'MASCULINO' },
@@ -66,18 +63,16 @@ export class PessoasCadastroViewComponent extends BaseResourceFormComponent<Pess
       public dialogService: DialogService ,
       public messageService: MessageService,
    ) {
-
       super(injector, new Pessoas(), pessoasService, Pessoas.fromJson, new MessageService());
       this.ptBrLocale = this.loadLocale();
-
    }
 
    protected buildResourceForm() {
       this.resourceForm = this.formBuilder.group({
 		   id: [null],
 		   nome: [null, [Validators.required, Validators.minLength(5)]],
-		   fisicaJuridica: ["F"],
-		   dataRegistro: [null],
+		   fisicaJuridica: [null, Validators.required],
+         dataRegistro: [{value: null,disabled: this.isDisabledFild}],
 		   observacao: [null],
 
          /*tiposPessoas:
@@ -86,21 +81,23 @@ export class PessoasCadastroViewComponent extends BaseResourceFormComponent<Pess
             id: [null],
          }),*/
 
-			cpfCnpj: [null],
+			cpfCnpj: [{value: null,disabled: this.isDisabledFild},Validators.required],
 			genero: [null],
 			estadoCivil:[null],
 		   situacao: ["A"],
 
-         nomeFantasia: [null],
-         objetoSocial: [null],
+         nomeFantasia: [{value: null,disabled: this.isDisabledFild}],
+         objetoSocial: [{value: null,disabled: this.isDisabledFild}],
          tipoEmpresaId: [1]
-      });
-
-   }
+      })
+   };
 
    onChange(event) {
+      this.isDisabledFild = false;
+      const stateFild = this.isDisabledFild ? 'disable' : 'enable';
+      this.validaEntradas(stateFild,event.value)
+
       if(event.value == 'F'){
-         // Bloquea
          (<HTMLSelectElement>document.getElementById('nomeFantasia')).disabled = true;
          (<HTMLSelectElement>document.getElementById('objetoSocial')).disabled = true;
       } else {
@@ -108,7 +105,7 @@ export class PessoasCadastroViewComponent extends BaseResourceFormComponent<Pess
          (<HTMLSelectElement>document.getElementById('nomeFantasia')).disabled = false;
          (<HTMLSelectElement>document.getElementById('objetoSocial')).disabled = false;
       }
-   }
+   };
 
    public cpfcnpjmask = function () {
       var numbers = (<HTMLSelectElement>document.getElementById('cpfCnpj')).value.match(/\d/g);
@@ -124,16 +121,54 @@ export class PessoasCadastroViewComponent extends BaseResourceFormComponent<Pess
    }
 
    protected creationPageTitle(): string {
-      //this.botaoOnOf = false;
-      return 'Novo Cadastro de Pessoa Física';
-
+      this.botaoOnOf = false;
+      //console.log("passou aqui ")
+      return 'Novo Cadastro de Pessoa';
    }
 
    protected editionPageTitle(): string {
+      var numbers = (<HTMLSelectElement>document.getElementById('cpfCnpj')).value.match(/\d/g);
       this.env.tabPanelOnOff = false;
-      //this.botaoOnOf = true;
+            this.botaoOnOf = true;
+            this.isDisabledFild = false;
+            const stateFild = this.isDisabledFild ? 'disable' : 'enable';
+
+      if (numbers != null){
+         if (numbers.length == 11){
+            this.validaEntradas(stateFild,"F")
+         } else {
+            this.validaEntradas(stateFild,"J")
+         }
+      }
+
       return 'Editando Pessoas: ' ;
    }
+
+   protected validaEntradas(stateFild,fisjur){
+      if(fisjur == "F"){
+         Object.keys(this.resourceForm.controls).forEach((controlName) => {
+            switch ( controlName ) {
+               case "cpfCnpj":
+                  this.resourceForm.controls[controlName][stateFild](); break;
+               case "dataRegistro":
+                  this.resourceForm.controls[controlName][stateFild](); break;
+            }
+         })
+      } else {
+         Object.keys(this.resourceForm.controls).forEach((controlName) => {
+            switch ( controlName ) {
+               case "cpfCnpj":
+                  this.resourceForm.controls[controlName][stateFild](); break;
+               case "dataRegistro":
+                  this.resourceForm.controls[controlName][stateFild](); break;
+               case "nomeFantasia":
+                  this.resourceForm.controls[controlName][stateFild](); break;
+               case "objetoSocial":
+                  this.resourceForm.controls[controlName][stateFild](); break;
+            }
+         })
+      }
+   };
 
    submitForm() {
       //this.submittingForm = true;
@@ -146,27 +181,38 @@ export class PessoasCadastroViewComponent extends BaseResourceFormComponent<Pess
       }
    }
 
-   /*protected updateResource() {
-      const replacer = function (key, value) {
-         if (this[key] instanceof Date) {
-         //console.log('ENTROU RESOLVER DATA ' + moment(this[key]).format('DD/MM/YYYY'))
-         return moment(this[key]).format('DD/MM/YYYY');
+   protected updateResource() {
+
+      // Logica para mudar a data registro de string para date mover para resourceform e mudar o formato.
+      const dtReg = function (key, value) {
+         if (key == "dataRegistro") {
+            const str = value;
+            const date = new Date(str);
+            return moment(this[key]).format('DD/MM/YYYY');
          }
          return value;
       };
 
-      // Move o usuario para pessoas
-      this.resourceForm.patchValue({
-         usuario: JSON.parse(sessionStorage.getItem("usuario")).nome
-      });
+      let dtRegis = JSON.stringify(dtReg);
+
+      const replacer = function (key, value) {
+         //console.log("ta bom entendi chave:", key, " valor:" , value);
+         if (this[key] instanceof Date) {
+            //console.log('ENTROU RESOLVER DATA ' + moment(this[key]).format('YYYY-MM-DD'))
+            return moment(this[key]).format('YYYY-MM-DD');
+         }
+         return value;
+      };
+      // ate aqui.
 
       const resource: Pessoas = this.jsonDataToResourceFn(this.resourceForm.value);
       // copia os dados de Pessoas para pessoas
       let pessoas = JSON.stringify(resource,replacer);
+      console.log("Pessoas ", pessoas);
 
       // Chama a funcao que grava/ faz update
       this.pessoasService.updatePessoa(pessoas)
-         .then(response => {
+      .then(response => {
          this.messageService.add({severity:'success', summary: 'Sucesso', detail: 'Pessoa atualizada com sucesso!'});
 
          // redireciona para lista
@@ -175,13 +221,13 @@ export class PessoasCadastroViewComponent extends BaseResourceFormComponent<Pess
             console.log(this.router);
             return this.router.navigate(["/" + baseComponentPath]);
          });
-         }).
+      }).
          catch(error => {
          console.log(error);
-         console.log('fail');
+         console.log('Falhou a tentativa de gravar');
          this.messageService.add({severity:'error', summary: 'Erro', detail:error.error[0].mensagemUsuario});
       });
-   }*/
+   }
 
    protected createResource() {
       const resource: Pessoas = this.jsonDataToResourceFn(this.resourceForm.value);
@@ -190,7 +236,7 @@ export class PessoasCadastroViewComponent extends BaseResourceFormComponent<Pess
 
       // Chama a funcao que grava
       this.pessoasService.createPessoa(pessoas)
-         .then(response => {
+      .then(response => {
          this.messageService.add({severity:'success', summary: 'Sucesso', detail: 'Pessoa inserida com sucesso!'});
 
          // Move o id para pessoas
@@ -200,9 +246,15 @@ export class PessoasCadastroViewComponent extends BaseResourceFormComponent<Pess
 
          this.env.tabPanelOnOff = false;
 
+         // redireciona para lista
+         const baseComponentPath = this.route.snapshot.parent.url[0].path;
+         this.router.navigateByUrl(baseComponentPath, { skipLocationChange: true }).then(() => {
+               console.log(this.router);
+               return this.router.navigate(["/" + baseComponentPath]);
+            });
          }).
          catch(error => {
-         console.log(error);
+         console.log(error, 'Falhou a tentativa de inserir');
          this.messageService.add({severity:'error', summary: 'Erro', detail:error.error[0].mensagemUsuario});
       });
    }

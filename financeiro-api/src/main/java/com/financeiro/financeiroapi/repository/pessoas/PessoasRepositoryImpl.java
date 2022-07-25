@@ -75,8 +75,8 @@ public class PessoasRepositoryImpl implements PessoasRepositoryQuery{
 	    
 	    //System.err.println("NASCIMENTO 	ENTROU AQUI : " + pessoasFilter.getDataNascimento());
 	    // DATA_REGISTRO - DATA NASCIMENTO
-	    if (pessoasFilter.getDataNascimento() != null) {
-    		Date data = pessoasFilter.getDataNascimento();
+	    /*if (pessoasFilter.getDataRegistro() != null) {
+    		Date data = pessoasFilter.getDataRegistro();
 			//remove time portion from specified date: now dd/mm/yy 00:00
 		    Date startDate = DateUtils.truncate(data, Calendar.DATE);
 		    //new date with time initialized to 23:59:59
@@ -91,7 +91,7 @@ public class PessoasRepositoryImpl implements PessoasRepositoryQuery{
 			//			
 			//			predicates.add(
 			//					builder.lessThanOrEqualTo(root.get(PessoasGeral_.DATA_REGISTRO), dataFinal));
-	    }
+	    }*/
 	    
 	    if (pessoasFilter.getDataRegistro() != null) {
     		Date data = pessoasFilter.getDataRegistro();
