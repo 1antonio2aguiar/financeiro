@@ -15,7 +15,9 @@ import { PessoasModalComponent } from '../../../modal/pessoas-modal/pessoas-moda
 @Component({
    selector: 'app-documentos-modal',
    templateUrl: './documentos-modal.component.html',
-   styleUrls: ['./documentos-modal.component.css']
+   styleUrls: ['./documentos-modal.component.css'],
+   // Isso aqui que resolve o problema de bloqueio de tela no modal
+   providers: [DialogService],
 })
 
 export class DocumentosModalComponent extends BaseResourceFormComponent<Documentos> {

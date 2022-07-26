@@ -65,6 +65,14 @@ altera o arquivo angular.joson ou angular cli.joson
   "./node_modules/primeng/resources/primeng.css",
   "./node_modules/primeng/resources/themes/omega/theme.css",
   "src/styles.css"
+  
+"styles": [
+  "src/styles.css",
+  "./node_modules/primeicons/primeicons.css",
+  "./src/theme/theme.css",
+  "./node_modules/primeng/resources/primeng.min.css",
+  "./node_modules/primeflex/primeflex.css"
+],
 
 //Retira os pontos de os traços do cpf/cnpj
 ===========================================

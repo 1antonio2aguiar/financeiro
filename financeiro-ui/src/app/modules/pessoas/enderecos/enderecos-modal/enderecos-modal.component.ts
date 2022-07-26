@@ -17,14 +17,13 @@ import { CepsModalComponent } from '../../../ceps/ceps-modal/ceps-modal.componen
 @Component({
    selector: 'app-enderecos-modal',
    templateUrl: './enderecos-modal.component.html',
-   styleUrls: ['./enderecos-modal.component.css']
+   styleUrls: ['./enderecos-modal.component.css'],
+   // Isso aqui que resolve o problema de bloqueio de tela no modal
+   // Isso que o gabriel pos por conta do modal bloqueando tela
+   providers: [DialogService],
 })
 
 export class EnderecosModalComponent extends BaseResourceFormComponent<Enderecos>{
-   // acho que isso e o gabriel que pos por conta do modal bloqueando tela
-   // Já testei não é isso que faz o modal fechar.
-   @Output() closeModalEvent = new EventEmitter<boolean>();
-   private enderecos: Enderecos;
 
    tiposEnderecosList = [
       { value: 'R', selected: false, label: 'RESIDENCIAL' },
