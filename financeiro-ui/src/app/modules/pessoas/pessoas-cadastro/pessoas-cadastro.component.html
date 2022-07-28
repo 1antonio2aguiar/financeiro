@@ -10,18 +10,21 @@
 
       <p-tabPanel id="abaEnderecos" header="Endereços" [selected]="selectedTab==1"
          [disabled]="env.tabPanelOnOff">
-
          <app-enderecos-list>
          </app-enderecos-list>
       </p-tabPanel>
 
-      <p-tabPanel id="abaDocumentos" header="Documentos" [selected]="selectedTab==3"
+      <p-tabPanel id="abaDocumentos" header="Documentos" [selected]="selectedTab==2"
          [disabled]="env.tabPanelOnOff">
          <app-documentos-list>
          </app-documentos-list>
       </p-tabPanel>
 
-
+      <p-tabPanel id="abaContatos" header="Contatos" [selected]="selectedTab==3"
+         [disabled]="env.tabPanelOnOff">
+         <app-contatos-list>
+         </app-contatos-list>
+      </p-tabPanel>
 
    </p-tabView>
 

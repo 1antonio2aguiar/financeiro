@@ -1,4 +1,3 @@
-import { TiposDocumentos } from "./tipos-documentos";
 
 export default interface DocumentosOutput {
 

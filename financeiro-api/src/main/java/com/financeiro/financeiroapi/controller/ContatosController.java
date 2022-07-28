@@ -1,5 +1,8 @@
 package com.financeiro.financeiroapi.controller;
 
+import java.util.List;
+import java.util.Optional;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -16,6 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,6 +43,25 @@ public class ContatosController {
 	    return contatosRepository.filtrar(contatosFilter, pageable);
 	}
 	
+	//Tonhas busca lista de contatos por pessoa
+	@GetMapping(value = "findByPessoaId")
+	@ResponseBody
+	public ResponseEntity<List<Contatos>> findByPessoaId(@RequestParam(name = "pessoaId") Long pessoaId){
+		//System.err.println("Bateu aqui " + pessoaId);
+		List<Contatos> contatos = contatosRepository.findByPessoaId(pessoaId);
+		return new ResponseEntity<List<Contatos>>(contatos, HttpStatus.OK);
+	}
+	
+	// Tonhas busca endereco por id.
+	@GetMapping("/{id}")
+	public ResponseEntity<Contatos> BuscarPorId(@PathVariable Long id) {
+		//System.err.println("OLHA ONDE ELE VÊIO !! " );
+		    Optional<Contatos> contatos = contatosRepository.findById(id);
+		    return contatos != null
+		        ? ResponseEntity.ok(contatos.get())
+		        : ResponseEntity.notFound().build();
+	}
+	
 	// AA - Inserir
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
@@ -45,7 +69,6 @@ public class ContatosController {
 		
 		Contatos contatosSalva = contatosService.save(contatosInput);
 		return ResponseEntity.status(HttpStatus.CREATED).body(contatosSalva);
-		
 	}
 	
 	// Alterar

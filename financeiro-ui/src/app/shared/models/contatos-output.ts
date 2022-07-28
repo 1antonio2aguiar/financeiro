@@ -1,11 +1,9 @@
-import { TiposContatos } from './tipos-contatos';
 
-export default interface EnderecosOutput {
+export default interface ContatosOutput {
 
-  id?: number,
-  contato?: number,
-  usuario?: string,
-
-  tiposContatos: TiposContatos
+   id?: number,
+   tipoContato?: string,
+   pessoa?: number,
+   contato?: string
 
 }

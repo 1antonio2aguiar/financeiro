@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 import { PessoasService } from '../pessoas.service';
 import { Pessoas } from './../../../shared/models/pessoas';
 import { EnderecosService } from '../enderecos/enderecos.service';
-//import { ContatosService } from '../contatos/contatos.service';
+import { ContatosService } from '../contatos/contatos.service';
 import { DocumentosService } from '../documentos/documentos.service';
 //import { EmpresasService } from '../empresas/empresas.service';
 
@@ -30,7 +30,7 @@ export class PessoasCadastroComponent extends BaseResourceFormComponent<Pessoas>
 
          protected pessoasService: PessoasService,
          protected enderecosService: EnderecosService,
-         //protected contatosService: ContatosService,
+         protected contatosService: ContatosService,
          protected documentosService: DocumentosService,
          //protected empresasService: EmpresasService,
          protected injector: Injector,
@@ -64,14 +64,14 @@ export class PessoasCadastroComponent extends BaseResourceFormComponent<Pessoas>
          this.enderecosService.listAll(this.pessoaId);
       }
 
-      /*if(event.index == 2){
-         //console.log("CLICOU NA ABA CONTATOS ")
-         this.contatosService.listAll(this.pessoaId)
-      }*/
-
       if(event.index == 2){
          //console.log("CLICOU NA ABA DOCUMENTOS ")
          this.documentosService.listAll(this.pessoaId)
+      }
+
+      if(event.index == 3){
+         //console.log("CLICOU NA ABA CONTATOS ")
+         this.contatosService.listAll(this.pessoaId)
       }
 
       /*if(event.index == 4){

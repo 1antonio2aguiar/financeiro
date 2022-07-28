@@ -26,12 +26,14 @@ import { EnderecosListComponent } from './enderecos/enderecos-list/enderecos-lis
 import { EnderecosModalComponent } from './enderecos/enderecos-modal/enderecos-modal.component';
 import { DocumentosListComponent } from './documentos/documentos-list/documentos-list.component';
 import { DocumentosModalComponent } from './documentos/documentos-modal/documentos-modal.component';
+import { ContatosListComponent } from './contatos/contatos-list/contatos-list.component';
+import { ContatosModalComponent } from './contatos/contatos-modal/contatos-modal.component';
 import { PessoasModalComponent } from '../modal/pessoas-modal/pessoas-modal.component';
 
 @NgModule({
    declarations: [PessoasPesquisaComponent, PessoasCadastroComponent, PessoasCadastroViewComponent,
       EnderecosListComponent,EnderecosModalComponent,DocumentosListComponent,DocumentosModalComponent,
-      PessoasModalComponent],
+      PessoasModalComponent,ContatosListComponent,ContatosModalComponent],
    imports: [
       SharedModule,
       IMaskModule,
