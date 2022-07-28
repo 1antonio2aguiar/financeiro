@@ -25,8 +25,18 @@ public class DocumentosInput {
 	@NotNull
 	private String numeroDocumento;
 	
-	private Date data_documento; 
-	private Date data_expedicao; 
-	private Date data_validade;
+	private Date dataDocumento; 
+	private Date dataExpedicao; 
+	private Date dataValidade;
+	
+	private String observacao;
+	
+	public String getnumeroDocumento() {
+		return numeroDocumento == null ? null :numeroDocumento.toUpperCase();
+	}
+	
+	public String getObservacao() {
+		return observacao == null ? null :observacao.toUpperCase();
+	}
 
 }

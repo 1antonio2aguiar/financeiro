@@ -11,6 +11,7 @@ export const environment = {
 
   currentActionGlobal: "",
   botaoOnOf: true,
+  botaoOnOfCep: true,
   tabPanelOnOff: true,
   fisicaJuridica: "",
 

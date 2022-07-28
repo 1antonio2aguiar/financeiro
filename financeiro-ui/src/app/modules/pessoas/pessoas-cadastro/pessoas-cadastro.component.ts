@@ -69,7 +69,7 @@ export class PessoasCadastroComponent extends BaseResourceFormComponent<Pessoas>
          this.contatosService.listAll(this.pessoaId)
       }*/
 
-      if(event.index == 3){
+      if(event.index == 2){
          //console.log("CLICOU NA ABA DOCUMENTOS ")
          this.documentosService.listAll(this.pessoaId)
       }

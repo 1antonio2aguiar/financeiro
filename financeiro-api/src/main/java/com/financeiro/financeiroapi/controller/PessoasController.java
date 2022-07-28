@@ -84,6 +84,7 @@ public class PessoasController {
 	// Alterar
 	@PutMapping("/{id}")
 	public ResponseEntity<Pessoas> atualizar(@PathVariable Long id, @Validated @RequestBody PessoasInput pessoasInput) {
+		//System.err.println("Esta tentando gravar");
 		Pessoas pessoasSalva = pessoasService.atualizar(id, pessoasInput);
 		return ResponseEntity.ok(pessoasSalva);
 	}

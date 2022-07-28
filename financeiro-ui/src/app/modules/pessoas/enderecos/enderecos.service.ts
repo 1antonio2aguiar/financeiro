@@ -62,7 +62,7 @@ export class EnderecosService extends BaseResourceService<Enderecos>{
    }
 
    createEndereco(resource): Promise<any> {
-      return this.http.post(this.apiPath+'/novo', resource, { headers: this.header })
+      return this.http.post(this.apiPath, resource, { headers: this.header })
       .toPromise()
       .then(response => response);
    }

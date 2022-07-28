@@ -184,22 +184,9 @@ export class PessoasCadastroViewComponent extends BaseResourceFormComponent<Pess
    protected updateResource() {
 
       // Logica para mudar a data registro de string para date mover para resourceform e mudar o formato.
-      const dtReg = function (key, value) {
-         if (key == "dataRegistro") {
-            const str = value;
-            const date = new Date(str);
-            return moment(this[key]).format('DD/MM/YYYY');
-         }
-         return value;
-      };
-
-      let dtRegis = JSON.stringify(dtReg);
-
       const replacer = function (key, value) {
-         //console.log("ta bom entendi chave:", key, " valor:" , value);
-         if (this[key] instanceof Date) {
-            //console.log('ENTROU RESOLVER DATA ' + moment(this[key]).format('YYYY-MM-DD'))
-            return moment(this[key]).format('YYYY-MM-DD');
+         if (key == "dataRegistro") {
+            return moment(this[key], 'DD-MM-YYYY').format();
          }
          return value;
       };
@@ -208,7 +195,7 @@ export class PessoasCadastroViewComponent extends BaseResourceFormComponent<Pess
       const resource: Pessoas = this.jsonDataToResourceFn(this.resourceForm.value);
       // copia os dados de Pessoas para pessoas
       let pessoas = JSON.stringify(resource,replacer);
-      console.log("Pessoas ", pessoas);
+      //console.log("Pessoas ", pessoas);
 
       // Chama a funcao que grava/ faz update
       this.pessoasService.updatePessoa(pessoas)

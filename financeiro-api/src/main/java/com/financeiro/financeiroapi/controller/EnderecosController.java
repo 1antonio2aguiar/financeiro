@@ -66,11 +66,8 @@ public class EnderecosController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Enderecos> adicionar(@Valid @RequestBody EnderecosInput enderecosInput, HttpServletResponse response) {
-		
-		Enderecos enderecosSalva = enderecosService.save(enderecosInput);
-		
+		Enderecos enderecosSalva = enderecosService.save(enderecosInput);		
 		return ResponseEntity.status(HttpStatus.CREATED).body(enderecosSalva);
-		
 	}
 	
 	// Alterar

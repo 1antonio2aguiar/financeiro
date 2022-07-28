@@ -43,9 +43,10 @@ public class Documentos {
 	private Pessoas pessoa;
 	
 	private String numeroDocumento;
+	private String observacao;
 	
-	private Date data_documento; 
-	private Date data_expedicao; 
-	private Date data_validade;
+	private Date dataDocumento; 
+	private Date dataExpedicao; 
+	private Date dataValidade;
 
 }

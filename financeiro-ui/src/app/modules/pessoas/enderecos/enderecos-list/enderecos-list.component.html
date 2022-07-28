@@ -35,8 +35,13 @@
               {{enderecos.id}}
             </td>
 
-            <td class="col-120px">
-              {{enderecos.tiposEnderecos.descricao}}
+            <td class="col-200px">
+               <span *ngIf="enderecos.tipoEndereco === 'R'">
+                  {{'RESIDENCIAL'}}
+               </span>
+               <span *ngIf="enderecos.tipoEndereco=== 'C'">
+                  {{'COMERCIAL'}}
+               </span>
             </td>
 
             <td>
@@ -56,7 +61,7 @@
             </td>
 
             <td>
-              {{enderecos.bairros.distritos.cidades.nome + ' - ' +
+              {{enderecos.bairros.cidades.nome + ' - ' +
               enderecos.bairros.cidades.estados.uf}}
             </td>
 

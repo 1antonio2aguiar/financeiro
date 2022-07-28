@@ -24,11 +24,6 @@ public class DocumentosService {
 	// Insert
 	@Transactional 
 	public Documentos save(DocumentosInput documentosInput) {
-		
-		//System.err.println("Esta no service 1 - " + enderecosInput.getTipoEndereco());
-		
-		//Logica para verificar se o documento já esta cadastrado para a pessoa
-		
 		Documentos documentos = new Documentos();
 		BeanUtils.copyProperties(documentosInput, documentos, "id");
 		

@@ -32,6 +32,10 @@ export class DocumentosModalComponent extends BaseResourceFormComponent<Document
    maxDate = new Date();
    cpfCnpj = '';
 
+   //Move os dados da pessoas para o modal de cadastro de enderecos
+   dadosPessoa=(<HTMLSelectElement>document.getElementById('nome')).value +' CPF: ' +
+   (<HTMLSelectElement>document.getElementById('cpfCnpj')).value
+
    tiposDocumentosList = [
       { value: 'RG', selected: false, label: 'REGISTRO GERAL - RG' },
       { value: 'CTPS', selected: false, label: 'CARTEIRA DE TRABALHO PROFISSIONAL' },
@@ -42,10 +46,6 @@ export class DocumentosModalComponent extends BaseResourceFormComponent<Document
       { value: 'INSCRIMUNICIPAL', selected: false, label: 'INSCRIÇÃO MUNICIPAL' },
       { value: 'OUTRO', selected: false, label: 'OUTRO' }
    ];
-
-   //Move os dados da pessoas para o modal de cadastro de Documentos
-   //dadosPessoa=(<HTMLSelectElement>document.getElementById('nome')).value +' CPF: ' +
-   //     (<HTMLSelectElement>document.getElementById('cpf')).value
 
    ptBrLocale;
 
@@ -73,24 +73,15 @@ export class DocumentosModalComponent extends BaseResourceFormComponent<Document
       this.resourceForm = this.formBuilder.group({
 
          id: [null],
-         pessoaId: [(<HTMLSelectElement>document.getElementById('id')).value],
-
-         numeroDocumento:[null,Validators.required, Validators.minLength(5)],
+         pessoa: [(<HTMLSelectElement>document.getElementById('id')).value],
+         tipoDocumento:[null,Validators.required],
+         numeroDocumento:[null,Validators.required],
 
          dataDocumento: [null],
          dataExpedicao: [null],
          dataValidade:  [null],
+         observacao:[null],
 
-         tiposDocumentos:[null],
-
-         idPessoas: this.formBuilder.group({
-            dadosPf: this.formBuilder.group({
-              cpfCnpj: [null],
-              cpf: [null],
-            }),
-            id: [null, [Validators.required]],
-            nome: [null],
-          }),
       })
    }
 
@@ -119,13 +110,21 @@ export class DocumentosModalComponent extends BaseResourceFormComponent<Document
    }
 
    protected updateResource(){
+
+      // Logica para mudar a data registro de string para date mover para resourceform e mudar o formato.
       const replacer = function (key, value) {
-         if (this[key] instanceof Date) {
-         //console.log('ENTROU RESOLVER DATA ' + moment(this[key]).format('DD/MM/YYYY'))
-         return moment(this[key]).format('DD/MM/YYYY');
+         if (key == "dataDocumento" && value != null) {
+            return moment(this[key], 'DD-MM-YYYY').format();
+         }
+         if (key == "dataExpedicao" && value != null) {
+            return moment(this[key], 'DD-MM-YYYY').format();
+         }
+         if (key == "dataValidade" && value != null) {
+            return moment(this[key], 'DD-MM-YYYY').format();
          }
          return value;
       };
+      // ate aqui.
 
       const resource: Documentos = this.jsonDataToResourceFn(this.resourceForm.value);
 
@@ -141,17 +140,10 @@ export class DocumentosModalComponent extends BaseResourceFormComponent<Document
    }
 
    protected createResource() {
-      const replacer = function (key, value) {
-         if (this[key] instanceof Date) {
-         //console.log('ENTROU RESOLVER DATA ' + moment(this[key]).format('DD/MM/YYYY'))
-         return moment(this[key]).format('DD/MM/YYYY');
-         }
-         return value;
-      };
 
       const resource: Documentos = this.jsonDataToResourceFn(this.resourceForm.value);
       // copia os dados de Documentos(classe) para Documentos(variavel json)
-      let documentos = JSON.stringify(resource,replacer);
+      let documentos = JSON.stringify(resource);
 
       // Chama a funcao que insere
       this.documentosService.createDocumento(documentos)
@@ -169,37 +161,35 @@ export class DocumentosModalComponent extends BaseResourceFormComponent<Document
       this.ref.close();
    }
 
-   // Modal Pessoas
-   showPessoas($event) {
+   // No edit retorna os dados aqui.
+   ngOnInit(){
+   this.documentosService.documentosEditSubscribeId(
+      resources => {
+         this.documentoId = resources.id
+         this.resourceForm.patchValue({
+            id: resources.id,
+            tipoDocumento: resources.tipoDocumento,
+            numeroDocumento: resources.numeroDocumento,
+            dataDocumento: resources.dataDocumento,
+            dataExpedicao: resources.dataExpedicao,
+            dataValidade:  resources.dataValidade,
+            observacao: resources.observacao,
 
-      const ref = this.dialogService.open(PessoasModalComponent, {
-      header: 'Selecione a Pessoa',
-      width: '70%'
-      });
+         })
+      })
 
-      ref.onClose.subscribe((pessoa) => {
+      if(this.env.currentActionGlobal === "DELETE"){
+         (<HTMLSelectElement>document.getElementById('numeroDocumento')).disabled = true;
+         (<HTMLSelectElement>document.getElementById('observacao')).disabled = true;
 
-      if (pessoa.fisicaJuridica ==  'J'){
-         this.cpfCnpj = pessoa.dadosPjGeral.cnpj
-         this.cpfCnpj = this.cpfCnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5")
+         //(<HTMLSelectElement>document.getElementById('dataDocumento')).disabled = true;
+         //(<HTMLSelectElement>document.getElementById('dataExpedicao')).disabled = true;
+         //(<HTMLSelectElement>document.getElementById('dataValidade')).disabled = true;
+
       } else {
-         this.cpfCnpj = pessoa.dadosPfGeral.cpf
-         this.cpfCnpj = this.cpfCnpj.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
+         if(this.env.currentActionGlobal === "EDIT"){
+            this.env.botaoOnOf = true;
+         }
       }
-
-      this.resourceForm.patchValue({
-         idPessoas: {
-            dadosPf:{
-            cpfCnpj: this.cpfCnpj,
-            cpf: this.cpfCnpj,
-            },
-            id: pessoa.id,
-            nome: pessoa.nome,
-         },
-         idPessoa: pessoa.id
-      });
-      });
    }
-
-
 }

@@ -64,11 +64,15 @@ public class PessoasService {
 	@Transactional
 	public Pessoas atualizar(Long id, PessoasInput pessoasInput) {
 		
+		//System.err.println("Esta tentando gravar");
+		
 		// Retira caracteres, traço e ponto do cpf/cnpj.
 		var cpfCnpj = pessoasInput.getCpfCnpj().replaceAll("\\p{Punct}", "");
 		pessoasInput.setCpfCnpj(cpfCnpj);
 				
 		Pessoas pessoasSalva = buscarPeloCodigo(id);
+		
+		//System.err.println("Estes são os dados - " + pessoasInput.getDataRegistro()+ " " + pessoasInput.getCpfCnpj());
 
 		BeanUtils.copyProperties(pessoasInput, pessoasSalva, "id");
 		

@@ -42,7 +42,7 @@ export class DocumentosListComponent extends BaseResourceListComponent<Documento
     this.modalVisible = true;
 
     const ref = this.dialogService.open(DocumentosModalComponent, {
-       header: 'Informe os Documentos' , width: '70%'
+       header: 'Informe os Documentos' , width: '55%'
     });
 
     ref.onClose.subscribe( () => {
@@ -55,7 +55,7 @@ export class DocumentosListComponent extends BaseResourceListComponent<Documento
     this.env.currentActionGlobal = "EDIT";
     this.modalVisible = true;
     const ref = this.dialogService.open(DocumentosModalComponent, {
-      header: 'Editando Documentos ' , width: '70%'
+      header: 'Editando Documentos ' , width: '55%'
     });
 
     this.documentosService.buscaDocumento(documentoId)
@@ -72,7 +72,7 @@ export class DocumentosListComponent extends BaseResourceListComponent<Documento
     this.env.botaoOnOf = false;
 
     const ref = this.dialogService.open(DocumentosModalComponent, {
-      header: 'CONFIRMA DELETAR DOCUMENTO? ' , width: '70%',
+      header: 'CONFIRMA DELETAR DOCUMENTO? ' , width: '55%',
       //styleClass:
       contentStyle: {"background-color": "red", "font-size": "3px"},
       //      style: {"background-color": "blue"},

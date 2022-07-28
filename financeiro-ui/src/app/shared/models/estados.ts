@@ -5,7 +5,7 @@ export class Estados extends BaseResourceModel {
     public codigo_inep?: number,
     public id?: number,
     public nome?: string,
-    public sigla?: string,
+    public uf?: string,
   ) {
   super();
 }

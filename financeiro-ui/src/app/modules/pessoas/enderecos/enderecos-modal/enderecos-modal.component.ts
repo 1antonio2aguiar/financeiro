@@ -63,8 +63,10 @@ export class EnderecosModalComponent extends BaseResourceFormComponent<Enderecos
 
       if (this.env.currentActionGlobal != "DELETE"){
          this.env.botaoOnOf = false;
+         this.env.botaoOnOfCep = false;
       } else {
          this.env.botaoOnOf = true;
+         this.env.botaoOnOfCep = true;
       }
    }
 
@@ -73,7 +75,7 @@ export class EnderecosModalComponent extends BaseResourceFormComponent<Enderecos
          id: [null],
          pessoa: [(<HTMLSelectElement>document.getElementById('id')).value],
 
-         tiposEnderecos:[null,[Validators.required]],
+         tipoEndereco:[null,[Validators.required]],
 
          cidades: this.formBuilder.group({
             estados: this.formBuilder.group({
@@ -82,6 +84,7 @@ export class EnderecosModalComponent extends BaseResourceFormComponent<Enderecos
             id: [null],
             nome: [null],
          }),
+
 
          bairros: this.formBuilder.group({
             id: [null, [Validators.required, Validators.maxLength(10)]],
@@ -174,6 +177,8 @@ export class EnderecosModalComponent extends BaseResourceFormComponent<Enderecos
       });
 
       ref.onClose.subscribe((cep) => {
+
+         this.env.botaoOnOf = true;
          //console.log(cep);
          this.resourceForm.patchValue({
             ceps: {
@@ -188,7 +193,7 @@ export class EnderecosModalComponent extends BaseResourceFormComponent<Enderecos
                id: cep.bairros.cidades.id,
                nome: cep.bairros.cidades.nome,
                estados: {
-                  sigla: cep.bairros.cidades.estados.sigla
+                  uf: cep.bairros.cidades.estados.uf
                }
             }
          });
@@ -292,11 +297,11 @@ export class EnderecosModalComponent extends BaseResourceFormComponent<Enderecos
          this.enderecoId = resources.id
 
          this.resourceForm.patchValue({
-            tiposEnderecos:resources.tipoEndereco,
+            tipoEndereco: resources.tipoEndereco,
 
             cidades:{
                estados:{
-                  sigla: resources.bairros.cidades.estados.sigla,
+                  uf: resources.bairros.cidades.estados.uf,
                },
                nome: resources.bairros.cidades.nome,
             },
@@ -333,14 +338,16 @@ export class EnderecosModalComponent extends BaseResourceFormComponent<Enderecos
          (<HTMLSelectElement>document.getElementById('numero')).disabled = true;
          (<HTMLSelectElement>document.getElementById('complemento')).disabled = true;
          (<HTMLSelectElement>document.getElementById('btnCep')).style.display = "none";
-
-
+         (<HTMLSelectElement>document.getElementById('btnCidade')).style.display = "none";
+         (<HTMLSelectElement>document.getElementById('btnBairro')).style.display = "none";
+         (<HTMLSelectElement>document.getElementById('btnLogradouro')).style.display = "none";
 
       } else {
          (<HTMLSelectElement>document.getElementById('numero')).disabled = false;
          (<HTMLSelectElement>document.getElementById('complemento')).disabled = false;
          if(this.env.currentActionGlobal === "EDIT"){
             this.env.botaoOnOf = true;
+            this.env.botaoOnOfCep = true;
          }
          //(<HTMLSelectElement>document.getElementById('btnCep')).style.display = "block";
       }

@@ -10,8 +10,7 @@ import lombok.Data;
 @Data
 public class PessoasOutput {
 	
-private Long id;
-	
+	private Long id;	
 	private String nome;	
 	private FisicaJuridica fisicaJuridica;
 	private Genero genero; 			

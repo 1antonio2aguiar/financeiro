@@ -18,8 +18,9 @@
         <ng-template pTemplate="header">
           <tr>
             <th class="blue-bg col-120px">Id</th>
-            <th class="blue-bg">Tipo Documento</th>
-            <th class="blue-bg">Documento</th>
+            <th class="blue-bg" style="text-align: left;">Tipo Documento</th>
+            <th class="blue-bg" style="text-align: left;">Número Documento</th>
+            <th class="blue-bg" style="text-align: left;">Observação</th>
             <th rowspan="2" style="text-align: center;" class="blue-bg">Ações</th>
           </tr>
         </ng-template>
@@ -29,12 +30,27 @@
             <td class="col-120px">
               {{documentos.id}}
             </td>
+
+            <!--<td>
+               <span *ngIf="documentos.tipoDocumento === 'RG'">
+                  {{'REGISTRO GERAL'}}
+               </span>
+               <span *ngIf="documentos.tipoDocumento === 'C'">
+                  {{'COMERCIAL'}}
+               </span>
+            </td> -->
+
             <td>
-              {{documentos.tiposDocumentos.descricao}}
+               {{documentos.tipoDocumento}}
             </td>
+
             <td>
               {{documentos.numeroDocumento}}
             </td>
+
+            <td>
+               {{documentos.observacao}}
+             </td>
 
             <td class="col-acoes">
               <button

@@ -39,8 +39,8 @@ export class DocumentosService extends BaseResourceService<Documentos>{
 
   // Busca lista de documentos por pessoa
   listAll(pessoa): Promise<any> {
-    //console.log("ESTA NO SERVICE ", pessoa)
-    return this.http.get<Documentos[]>(this.apiPath + 'documentos/findByPessoaId?pessoaId='+pessoa)
+    console.log("ESTA NO SERVICE ", pessoa)
+    return this.http.get<Documentos[]>(this.apiPath + '/findByPessoaId?pessoaId='+pessoa)
       .toPromise()
       .then(response => {
         this.documentosEventHendler.emit(response);
@@ -70,11 +70,11 @@ export class DocumentosService extends BaseResourceService<Documentos>{
     this.documentosEventHendlerId.subscribe(callBack);
   }
 
-  createDocumento(resource): Promise<any> {
-    return this.http.post(this.apiPath+'/novo', resource, { headers: this.header })
-    .toPromise()
-    .then(response => response);
-  }
+   createDocumento(resource): Promise<any> {
+      return this.http.post(this.apiPath, resource, { headers: this.header })
+      .toPromise()
+      .then(response => response);
+   }
 
   updateDocumento(resource): Promise<any> {
     return this.http.put(this.apiPath + '/' + JSON.parse(resource).id, resource, { headers: this.header })
